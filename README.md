@@ -50,7 +50,9 @@ ground truth.
 
 ### Position reconstruction
 
-S1 is the best method for ADE and RMS over the tested video gaps. Natural S3
+The reconstruction results are compared using ADE and RMS, computed over the
+hidden samples for every interpolation method and gap length. S1 is the best
+method according to both metrics over the tested video gaps. Natural S3
 and clamped S3 are close alternatives with smoother trajectories. Vandermonde,
 Lagrange, and Newton are different implementations of the same polynomial on
 the same nodes; their accuracy is therefore identical up to floating-point
@@ -130,30 +132,6 @@ For 24-frame gaps:
 | Floater-Hormann (extension) | 27.1535 | 271.3230 | 81.0957 |
 
 See the [complete kinematics report](docs/kinematics_results.md).
-
-## Error metrics
-
-For a hidden reference position $P_i$ and reconstructed position
-$\widehat P_i$, define the Euclidean error
-$e_i=\lVert P_i-\widehat P_i\rVert_2$.
-
-$$
-\mathrm{ADE}=\frac{1}{M}\sum_{i=1}^{M}e_i
-$$
-
-**ADE (Average Displacement Error)** is the mean positional error over all
-hidden samples. It has the same unit as the position, pixels or metres, and is
-an intuitive measure of the typical reconstruction error.
-
-$$
-\mathrm{RMS}_P=\sqrt{\frac{1}{M}\sum_{i=1}^{M}e_i^2}
-$$
-
-**RMS (Root Mean Square)** also has units of pixels or metres, but gives more
-weight to large errors because each error is squared before averaging. It is
-therefore useful for detecting oscillations or occasional severe failures.
-Always $\mathrm{RMS}_P\geq\mathrm{ADE}$; equality holds when all errors have
-the same magnitude.
 
 ## Methods
 
