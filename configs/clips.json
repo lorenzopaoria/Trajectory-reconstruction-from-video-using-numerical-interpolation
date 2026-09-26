@@ -1,0 +1,13 @@
+{
+  "clips_per_video": 6,
+  "target_seconds": 8.0,
+  "minimum_seconds": 6.0,
+  "candidate_stride_seconds": 2.0,
+  "minimum_median_height_px": 14.0,
+  "minimum_displacement_px": 40.0,
+  "minimum_displacement_widths": 0.75,
+  "minimum_moving_fraction": 0.60,
+  "minimum_directional_coherence": 0.55,
+  "minimum_masked_samples": 24,
+  "encoder": "h264_nvenc"
+}

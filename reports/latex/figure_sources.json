@@ -1,0 +1,27 @@
+[
+  {
+    "file": "figures/course_comparison.png",
+    "source": "reports/generated/course/course_comparison.png",
+    "sha256": "ff46ead0eb7e9e587d484f9081ee34b43cf968aa320df1b5b215c8c427b4ea49"
+  },
+  {
+    "file": "figures/chebyshev_runge.png",
+    "source": "reports/generated/course/experiments/chebyshev_runge.png",
+    "sha256": "42acf4bcd38c48d5090fcadca82cab6b216c3fe071fc1c62f97663575dedfe14"
+  },
+  {
+    "file": "figures/periodic.png",
+    "source": "reports/generated/course/experiments/periodic.png",
+    "sha256": "40b3d48d3f92288b3dbe8851875f6d9d8e37f159021373bcf9f90f411b8be8a6"
+  },
+  {
+    "file": "figures/clip_rene.jpg",
+    "source": "reports/generated/course/clips/urban_rene_car1229_f00611.jpg",
+    "sha256": "1db2fd158be1b5e6a787d1767bf2ce2b356240c2c39a17eeecbf45e721271ec0"
+  },
+  {
+    "file": "figures/calibration_coverage.png",
+    "source": "reports/generated/ground/calibration_coverage.png",
+    "sha256": "d69610f1a9d40f443508c1dc8dfff4e645b5b65409719d9484f6788abcfc51a7"
+  }
+]

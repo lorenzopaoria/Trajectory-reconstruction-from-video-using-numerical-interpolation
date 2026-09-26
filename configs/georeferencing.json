@@ -1,0 +1,22 @@
+{
+  "geminiport_root": "~/Work/GeminiPort-Master/GeminiPort",
+  "calibration_directory": "calibration",
+  "scenes": {
+    "urban_sherbrooke": {
+      "camera_id": "UrbanSherbrooke",
+      "source": "data/urbantracker/raw/sherbrooke/sherbrooke_video.avi",
+      "location": "Sherbrooke / Amherst (oggi Atateken), Montreal",
+      "scene_center_lat_lon": [45.521378765432104, -73.56568296296297],
+      "scene_center_note": "Decoded center from the dataset Bing cp parameter; map orientation only, not surveyed camera position or ground control point",
+      "map_reference": "https://www.bing.com/maps/?v=2&cp=rkm6648w2k6d&lvl=19.27&dir=177.75&sty=o"
+    },
+    "urban_rene": {
+      "camera_id": "UrbanRene",
+      "source": "data/urbantracker/raw/rene/rene_video.mov",
+      "location": "Boulevard Rene-Levesque Ouest, zona 1425, Montreal",
+      "scene_center_lat_lon": [45.49492074074075, -73.57400691358025],
+      "scene_center_note": "Decoded center from the dataset Bing cp parameter; map orientation only, not surveyed camera position or ground control point",
+      "map_reference": "https://www.bing.com/maps/?v=2&cp=rkg7498w1ygj&lvl=19.26&dir=359.66&sty=o"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "seed": 20260921,
+  "masking_mode": "continuous",
+  "gap_sizes": [3, 6, 12, 24],
+  "support_per_side": 4,
+  "minimum_track_frames": 24,
+  "minimum_mean_confidence": 0.35,
+  "minimum_displacement_px": 8.0,
+  "allowed_class_ids": [2],
+  "methods": ["s1", "s2", "s3_natural"],
+  "protocol": "full_video_post_tracking_shared_continuous_mask",
+  "evaluation": "descriptive_fixed_camera_cars_all_eligible_runs"
+}

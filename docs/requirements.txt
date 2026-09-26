@@ -1,0 +1,9 @@
+# Versions used by the first successful run (Python 3.14.7, Linux).
+numpy==2.4.6
+scipy==1.17.1
+opencv-python==5.0.0.93
+ultralytics==8.4.89
+torch==2.12.0
+torchvision==0.27.0
+matplotlib==3.10.9
+lap==0.5.13
