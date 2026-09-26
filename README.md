@@ -79,8 +79,8 @@ $$
 $$
 \theta(t)=
 \left[
-\frac{180}{\pi}\operatorname{atan2}(v_E(t),v_N(t))+360
-\right]\bmod 360
+\frac{180}{\pi}\mathrm{atan2}(v_E(t),v_N(t))+360
+\right]\mathbin{\%} 360
 $$
 
 The corresponding computation is:
@@ -158,12 +158,12 @@ sample masking.
 The main metrics are:
 
 $$
-\operatorname{ADE}
+\mathrm{ADE}
 =\frac{1}{M}\sum_{i=1}^{M}\lVert P_i-\widehat P_i\rVert_2,
 $$
 
 $$
-\operatorname{RMS}_P
+\mathrm{RMS}_P
 =\sqrt{\frac{1}{M}\sum_{i=1}^{M}
 \lVert P_i-\widehat P_i\rVert_2^2}
 $$
