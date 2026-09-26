@@ -16,9 +16,8 @@ Le bounding box di YOLO servono a individuare il bottom center e a visualizzare 
 
 - **[Relazione PDF](../relazione_progetto.pdf)**
 - **[Sorgente LaTeX](../reports/latex/relazione_progetto.tex)** · **[ZIP per Overleaf](../reports/latex/relazione_progetto_sorgenti.zip)**
-- **[Dodici clip brevi con riferimento rosso e confronto per metodo](reports/generated/course/clips/INDEX.md)**
-- [Report del confronto in pixel](reports/generated/course/RESULTS.md)
-- **[Report metrico e copertura delle calibrazioni](reports/generated/ground/RESULTS.md)**
+- [Report del confronto in pixel](pixel_benchmark_results.md)
+- **[Report metrico e copertura delle calibrazioni](metric_benchmark_results.md)**
 - [Metodi ed esperimenti](metodi_ed_esperimenti.md)
 - [Calibrazione e proiezione metrica](calibrazione.md)
 - [Comandi della pipeline](esecuzione.md)
@@ -38,7 +37,9 @@ Le maschere condivise contengono gap di **3, 6, 12 e 24 frame**, con quattro nod
 - S3 periodica e trigonometrica su dati periodici sintetici;
 - esperimenti sui nodi di Chebyshev e sul supporto di 4, 6 e 8 nodi.
 
-Formule e terminologia derivano dalle [dispense di interpolazione](../Materiale/OneDrive_1_9-15-2026/Interpolazione.pdf). La relazione presenta per ogni metodo una definizione breve, la formula e il codice Python essenziale.
+Formule e terminologia derivano dalle dispense di interpolazione utilizzate
+nel corso. La relazione presenta per ogni metodo una definizione breve, la
+formula e il codice Python essenziale.
 
 ## Geometria
 

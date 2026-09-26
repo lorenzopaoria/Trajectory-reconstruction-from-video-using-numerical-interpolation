@@ -43,11 +43,20 @@ the comparison.
 
 ### Reconstruction comparison
 
-![Error comparison as the gap varies](reports/generated/course/course_comparison.png)
+![Error comparison as the gap varies](docs/assets/course_comparison.png)
+
+### Multi-method video reconstruction
+
+The following frame shows the same vehicle passage reconstructed with all
+interpolation methods used in the benchmark. The red trajectory is the
+YOLO/ByteTrack reference; each panel shows one interpolant on the same
+masked frames.
+
+![Multi-method interpolation comparison](docs/assets/multimethod_interpolation_clip.jpg)
 
 ### Metric comparison on the road plane
 
-![Error comparison in pixels and meters](reports/generated/ground/metric_comparison.png)
+![Error comparison in pixels and meters](docs/assets/metric_comparison.png)
 
 The metric comparison uses only the 406 gaps for which both the visible
 and hidden points belong to the calibrated area. The reference is the
@@ -56,11 +65,11 @@ measurement.
 
 ### Calibration coverage
 
-![Valid calibration areas](reports/generated/ground/calibration_coverage.png)
+![Valid calibration areas](docs/assets/calibration_coverage.png)
 
 ### Effect of interpolation nodes
 
-![Runge experiment and Chebyshev nodes](reports/generated/course/experiments/chebyshev_runge.png)
+![Runge experiment and Chebyshev nodes](docs/assets/chebyshev_runge.png)
 
 The synthetic experiment shows that, for high-degree global polynomials,
 Chebyshev nodes reduce oscillations compared with equally spaced nodes.
@@ -111,7 +120,7 @@ For 24-frame gaps:
 | Vandermonde / Lagrange / Newton | 8,7811 | 90,9516 | 69,3162 |
 | Floater–Hormann | 27,1535 | 271,3230 | 81,0957 |
 
-Complete report: [KINEMATICS.md](data/urbantracker/results/ground/KINEMATICS.md).
+Complete report: [kinematics_results.md](docs/kinematics_results.md).
 
 ## Compared methods
 
@@ -170,15 +179,12 @@ $$
 
 ## Videos and clips
 
-- [Index of the 12 short clips](reports/generated/course/clips/INDEX.md)
-- [Complete René-Lévesque video](reports/generated/static_full/full_reconstruction_urban_rene.mp4)
-- [Complete Sherbrooke video](reports/generated/static_full/full_reconstruction_urban_sherbrooke.mp4)
-- [Pixel benchmark report](reports/generated/course/RESULTS.md)
-- [Metric comparison report](reports/generated/ground/RESULTS.md)
+- [Pixel benchmark report](docs/pixel_benchmark_results.md)
+- [Metric comparison report](docs/metric_benchmark_results.md)
 
 Preview of a complete reconstruction:
 
-![Reconstruction snapshot](reports/generated/static_full/snapshot_urban_rene_04250.jpg)
+![Reconstruction snapshot](docs/assets/reconstruction_snapshot.jpg)
 
 ## Repository structure
 
@@ -190,7 +196,7 @@ Preview of a complete reconstruction:
 ├── configs/                     # Experiment configurations
 ├── calibration/                 # Calibrations and checkpoint templates
 ├── data/                        # Prepared datasets, tracking, and results
-├── reports/generated/           # Produced tables, plots, clips, and videos
+├── docs/assets/                 # Lightweight benchmark plots and preview image
 ├── reports/latex/               # LaTeX source and Overleaf package
 ├── models/                      # YOLO models
 └── docs/                        # Operational documentation
@@ -235,7 +241,7 @@ Operational details are available in [docs/esecuzione.md](docs/esecuzione.md).
 - [Pipeline execution](docs/esecuzione.md)
 - [Fixed-camera videos](docs/video_camera_fissa.md)
 - [LaTeX source of the report](reports/latex/relazione_progetto.tex)
-- [Complete kinematics report](data/urbantracker/results/ground/KINEMATICS.md)
+- [Complete kinematics report](docs/kinematics_results.md)
 
 ## Limitations and interpretation
 
