@@ -1,84 +1,95 @@
 # Trajectory Reconstruction from Video Using Numerical Interpolation
 
-This project studies the reconstruction of vehicle trajectories from
-traffic videos recorded with a fixed camera. Some trajectory samples are
-artificially hidden and reconstructed using different interpolation
-methods; the estimates are then compared with the original samples.
+This project reconstructs missing vehicle positions in fixed-camera traffic
+videos using numerical interpolation. The complete pipeline combines object
+detection, tracking, interpolation, road-plane calibration, and kinematic
+analysis.
 
-The complete workflow is:
+> **Main conclusion:** for the evaluated scenes and masking protocol, the
+> piecewise-linear **S1 interpolant** gives the best overall compromise
+> between position accuracy, kinematic accuracy, stability, and cost.
+
+## Project overview
+
+| Component | Configuration |
+|---|---|
+| Input | 2 complete Urban Tracker traffic videos |
+| Detection and tracking | YOLO11n + ByteTrack |
+| Main benchmark | 5,517 shared gaps, 3/6/12/24 hidden frames |
+| Visible support | 4 observations before and 4 after each gap |
+| Interpolation methods | 8 methods |
+| Pixel evaluations | 44,136, with no numerical failures |
+| Metric evaluations | 406 gaps inside the calibrated road areas |
+| Kinematic quantities | speed, acceleration, and heading |
+
+## Workflow
 
 ```text
-video → detection and tracking → observed trajectories
-      → sample masking → interpolation
-      → pixel evaluation
-      → road-plane calibration
-      → metric and kinematic evaluation
+video
+  -> object detection and tracking
+  -> observed vehicle trajectories
+  -> controlled masking of samples
+  -> interpolation of missing positions
+  -> pixel-space evaluation
+  -> road-plane calibration
+  -> metric-space and kinematic evaluation
 ```
 
-## Main results
+The trajectory point is the bottom centre of each detected bounding box:
 
-The main benchmark uses:
+$$
+u=\frac{u_{\min}+u_{\max}}{2},\qquad v=v_{\max}.
+$$
 
-- 2 Urban Tracker videos processed in full;
-- 12 short illustrative clips;
-- 5.517 gaps shared by all methods;
-- gaps of 3, 6, 12, and 24 frames;
-- 4 visible points before and 4 after each gap;
-- 8 interpolation methods;
-- 44.136 evaluations without numerical failures;
-- 406 gaps fully contained within the calibrated metric areas.
+YOLO11n detects vehicles and ByteTrack assigns identities over time. The
+protocol is post-tracking: identities are assigned before samples are hidden.
+The reference is therefore a YOLO/ByteTrack reference, not independent manual
+ground truth.
 
-For these scenes, **linear S1 is the most accurate and stable method**:
+## Results
 
-- it achieves the best ADE and RMS for position;
-- it keeps kinematic error lower on long gaps;
-- it has a lower computational cost;
-- it does not introduce global oscillations like high-degree polynomials.
+### Position reconstruction
 
-**Natural S3** and **constrained S3** are regular alternatives with
-similar performance. Vandermonde, Lagrange, and Newton represent the same
-polynomial on the same nodes: the formulation and evaluation change, not
-the interpolating function. S2 and Floater–Hormann are extensions added to
-the comparison.
+S1 is the best method for ADE and RMS over the tested video gaps. Natural S3
+and clamped S3 are close alternatives with smoother trajectories. Vandermonde,
+Lagrange, and Newton are different implementations of the same polynomial on
+the same nodes; their accuracy is therefore identical up to floating-point
+rounding. S2 and Floater-Hormann are project extensions.
 
-### Reconstruction comparison
+<p align="center">
+  <img src="docs/assets/multimethod_interpolation_clip.jpg"
+       alt="Same vehicle passage reconstructed with multiple interpolation methods"
+       width="100%">
+</p>
 
-![Error comparison as the gap varies](docs/assets/course_comparison.png)
+<p align="center">
+  <em>One vehicle passage, one reference trajectory in red, and the
+  interpolation methods shown in synchronized panels.</em>
+</p>
 
-### Multi-method video reconstruction
+| Pixel benchmark | Metric benchmark |
+|---|---|
+| ![Pixel error comparison](docs/assets/course_comparison.png) | ![Metric error comparison](docs/assets/metric_comparison.png) |
 
-The following frame shows the same vehicle passage reconstructed with all
-interpolation methods used in the benchmark. The red trajectory is the
-YOLO/ByteTrack reference; each panel shows one interpolant on the same
-masked frames.
+The metric benchmark is restricted to the 406 gaps for which every visible
+support point and hidden reference point lies inside the calibrated road area.
+The metric reference is the projection of YOLO/ByteTrack observations, not GPS.
 
-![Multi-method interpolation comparison](docs/assets/multimethod_interpolation_clip.jpg)
+### Node distribution and calibration
 
-### Metric comparison on the road plane
+| Runge/Chebyshev experiment | Valid calibration areas |
+|---|---|
+| ![Runge and Chebyshev nodes](docs/assets/chebyshev_runge.png) | ![Calibrated road areas](docs/assets/calibration_coverage.png) |
 
-![Error comparison in pixels and meters](docs/assets/metric_comparison.png)
+The Runge experiment shows why equally spaced nodes can produce strong
+oscillations for high-degree global polynomials. Chebyshev nodes reduce this
+effect. The calibration image shows the part of each camera view where the
+road-plane mapping is considered valid.
 
-The metric comparison uses only the 406 gaps for which both the visible
-and hidden points belong to the calibrated area. The reference is the
-projection of the YOLO/ByteTrack observations, not an independent GPS
-measurement.
+## Kinematic analysis
 
-### Calibration coverage
-
-![Valid calibration areas](docs/assets/calibration_coverage.png)
-
-### Effect of interpolation nodes
-
-![Runge experiment and Chebyshev nodes](docs/assets/chebyshev_runge.png)
-
-The synthetic experiment shows that, for high-degree global polynomials,
-Chebyshev nodes reduce oscillations compared with equally spaced nodes.
-
-## Kinematics
-
-Velocity, acceleration, and heading are not interpolated with a separate
-model. The East and North metric coordinates are interpolated and their
-derivatives are computed:
+Speed, acceleration, and heading are derived from the interpolated East and
+North coordinates. A separate interpolant is not fitted to speed or heading:
 
 $$
 v_E(t)=E'(t),\qquad v_N(t)=N'(t),\qquad
@@ -89,10 +100,8 @@ $$
 \theta(t)=
 \left[
 \frac{180}{\pi}\mathrm{atan2}(v_E(t),v_N(t))+360
-\right]\mathbin{\%} 360
+\right]\mathbin{\%}360
 $$
-
-The corresponding computation is:
 
 ```python
 v_e = model_e.derivative(query_times, order=1)
@@ -104,112 +113,112 @@ heading = (np.degrees(np.arctan2(v_e, v_n)) + 360) % 360
 heading[speed < 0.5] = np.nan
 ```
 
-The kinematic evaluation was performed on the 406 valid metric gaps.
-The reference is obtained using finite differences on the complete
-projected trajectory; it is therefore a descriptive estimate based on
-YOLO/ByteTrack, not independent GPS or inertial ground truth.
+The evaluation uses the 406 valid metric gaps. The reference is computed with
+finite differences on the complete projected trajectory, so it is a descriptive
+YOLO/ByteTrack-based estimate rather than independent GPS or inertial ground
+truth. Heading is ignored below 0.5 m/s, where its direction is unstable.
 
 For 24-frame gaps:
 
 | Method | Velocity MAE (m/s) | Acceleration MAE (m/s²) | Heading MAE (°) |
 |---|---:|---:|---:|
-| S1 | 0,7607 | 19,5135 | 24,2816 |
-| Natural S3 | 0,9262 | 20,0055 | 26,9254 |
-| Clamped S3 | 0,9276 | 20,0034 | 26,9037 |
-| S2 | 1,4928 | 21,6733 | 35,2215 |
-| Vandermonde / Lagrange / Newton | 8,7811 | 90,9516 | 69,3162 |
-| Floater–Hormann | 27,1535 | 271,3230 | 81,0957 |
+| S1 | 0.7607 | 19.5135 | 24.2816 |
+| Natural S3 | 0.9262 | 20.0055 | 26.9254 |
+| Clamped S3 | 0.9276 | 20.0034 | 26.9037 |
+| S2 (extension) | 1.4928 | 21.6733 | 35.2215 |
+| Vandermonde / Lagrange / Newton | 8.7811 | 90.9516 | 69.3162 |
+| Floater-Hormann (extension) | 27.1535 | 271.3230 | 81.0957 |
 
-Complete report: [kinematics_results.md](docs/kinematics_results.md).
+See the [complete kinematics report](docs/kinematics_results.md).
 
-## Compared methods
+## Error metrics
 
-### Course methods
+For a hidden reference position $P_i$ and reconstructed position
+$\widehat P_i$, define the Euclidean error
+$e_i=\lVert P_i-\widehat P_i\rVert_2$.
 
-- interpolation in the monomial basis using a Vandermonde matrix;
+$$
+\mathrm{ADE}=\frac{1}{M}\sum_{i=1}^{M}e_i
+$$
+
+**ADE (Average Displacement Error)** is the mean positional error over all
+hidden samples. It has the same unit as the position, pixels or metres, and is
+an intuitive measure of the typical reconstruction error.
+
+$$
+\mathrm{RMS}_P=\sqrt{\frac{1}{M}\sum_{i=1}^{M}e_i^2}
+$$
+
+**RMS (Root Mean Square)** also has units of pixels or metres, but gives more
+weight to large errors because each error is squared before averaging. It is
+therefore useful for detecting oscillations or occasional severe failures.
+Always $\mathrm{RMS}_P\geq\mathrm{ADE}$; equality holds when all errors have
+the same magnitude.
+
+## Methods
+
+### Methods from the course
+
+- Vandermonde matrix and monomial-basis interpolation;
 - Lagrange polynomials;
-- Newton form with divided differences and Horner's scheme;
-- linear S1 spline;
-- natural cubic S3 spline;
-- constrained cubic spline;
-- periodic cubic spline;
+- Newton form, divided differences, and Horner evaluation;
+- piecewise-linear S1 spline;
+- natural and clamped cubic S3 splines;
+- periodic cubic splines;
 - Chebyshev nodes;
 - trigonometric interpolation for periodic data.
 
 ### Project extensions
 
 - quadratic S2 spline;
-- Floater–Hormann barycentric rational interpolation;
-- benchmark on real videos;
-- extraction of velocity, acceleration, and heading;
-- road-plane calibration and conversion to metric coordinates.
+- Floater-Hormann barycentric rational interpolation;
+- real-video benchmark and controlled masking;
+- road-plane calibration and metric coordinates;
+- speed, acceleration, and heading evaluation.
 
 ## Data and experimental protocol
 
-The videos used are:
-
 | Scene | Frames | Approximate duration |
 |---|---:|---:|
-| Sherbrooke | 4.000 | 2 min 13 s |
-| René-Lévesque | 8.501 | 4 min 44 s |
+| Sherbrooke | 4,000 | 2 min 13 s |
+| René-Levesque | 8,501 | 4 min 44 s |
 
-The trajectories are constructed from the *bottom center* point of the
-bounding boxes:
+Each track is evaluated using shared masks with gaps of 3, 6, 12, and 24
+frames. Four visible observations are retained on each side of a gap. Hidden
+samples are never used as support points for another fit.
 
-$$
-u=\frac{u_{\min}+u_{\max}}{2},\qquad v=v_{\max}.
-$$
-
-YOLO11n detects the cars and ByteTrack maintains their identities over
-time. The protocol is *post-tracking*: identities are assigned before
-sample masking.
-
-The main metrics are:
-
-$$
-\mathrm{ADE}
-=\frac{1}{M}\sum_{i=1}^{M}\lVert P_i-\widehat P_i\rVert_2,
-$$
-
-$$
-\mathrm{RMS}_P
-=\sqrt{\frac{1}{M}\sum_{i=1}^{M}
-\lVert P_i-\widehat P_i\rVert_2^2}
-$$
-
-## Videos and clips
-
-- [Pixel benchmark report](docs/pixel_benchmark_results.md)
-- [Metric comparison report](docs/metric_benchmark_results.md)
-
-Preview of a complete reconstruction:
-
-![Reconstruction snapshot](docs/assets/reconstruction_snapshot.jpg)
+The road-plane mapping converts image coordinates to local East/North metric
+coordinates. It is valid only for the calibrated road surface and image area.
+The metric comparison includes 406 complete gaps; the remaining gaps are
+outside the valid calibration domain.
 
 ## Repository structure
 
 ```text
 .
 ├── relazione_progetto.pdf       # Final report
-├── src/                         # Pipeline code
+├── src/                         # Pipeline and benchmark code
 ├── tests/                       # Numerical and geometric tests
 ├── configs/                     # Experiment configurations
-├── calibration/                 # Calibrations and checkpoint templates
-├── data/                        # Prepared datasets, tracking, and results
-├── docs/assets/                 # Lightweight benchmark plots and preview image
+├── calibration/                 # Calibration files and templates
+├── data/                        # Local datasets and generated results
+├── docs/                        # Documentation and tracked README assets
 ├── reports/latex/               # LaTeX source and Overleaf package
-├── models/                      # YOLO models
-└── docs/                        # Operational documentation
+└── models/                      # Local YOLO model files
 ```
 
-The final report is available directly in the root:
-[relazione_progetto.pdf](relazione_progetto.pdf).
+Large datasets, generated videos, models, caches, and full generated reports
+are intentionally excluded by `.gitignore`. Lightweight plots, the preview
+image, and Markdown result summaries used by this README are stored under
+`docs/` so they remain visible on GitHub.
 
 ## Reproduction
 
-From the main directory:
+From the repository root:
 
 ```bash
+pip install -r docs/requirements.txt
+
 python3 -m unittest discover -s tests -v
 
 python3 -m src.benchmark
@@ -225,32 +234,27 @@ python3 -m src.ground_report
 python3 reports/latex/build_report.py
 ```
 
-For the Python environment:
+Video tracking and encoding may require FFmpeg, CUDA, and NVENC. See the
+[pipeline execution guide](docs/esecuzione.md) for operational details.
 
-```bash
-pip install -r docs/requirements.txt
-```
+## Documentation and reports
 
-Video tracking and encoding may require FFmpeg, CUDA, and NVENC.
-Operational details are available in [docs/esecuzione.md](docs/esecuzione.md).
-
-## Additional documentation
-
+- [Final PDF report](relazione_progetto.pdf)
 - [Methods and experiments](docs/metodi_ed_esperimenti.md)
 - [Road-plane calibration](docs/calibrazione.md)
 - [Pipeline execution](docs/esecuzione.md)
-- [Fixed-camera videos](docs/video_camera_fissa.md)
-- [LaTeX source of the report](reports/latex/relazione_progetto.tex)
-- [Complete kinematics report](docs/kinematics_results.md)
+- [Fixed-camera video analysis](docs/video_camera_fissa.md)
+- [Pixel benchmark summary](docs/pixel_benchmark_results.md)
+- [Metric benchmark summary](docs/metric_benchmark_results.md)
+- [Kinematic benchmark summary](docs/kinematics_results.md)
+- [LaTeX report source](reports/latex/relazione_progetto.tex)
 
-## Limitations and interpretation
+## Limitations
 
-- The reference comes from YOLO/ByteTrack, not from independent manual
+- YOLO/ByteTrack observations are a reference signal, not independent manual
   annotations.
-- Metric calibration is valid only in the area covered by the control
-  points and the road plane.
-- Calibration residuals do not replace independent checkpoints.
-- Heading and acceleration are more sensitive to noise and interpolant
-  oscillations than position.
-- The quantitative conclusions apply to these scenes, these masks, and
-  this experimental configuration.
+- Calibration is valid only inside the selected road-plane area.
+- Calibration residuals do not replace independent control checkpoints.
+- Heading and acceleration are more sensitive to noise than position.
+- Quantitative conclusions apply to the two scenes, masks, and configurations
+  used in this experiment.
