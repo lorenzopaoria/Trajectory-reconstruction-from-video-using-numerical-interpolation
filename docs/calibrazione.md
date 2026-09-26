@@ -2,9 +2,18 @@
 
 ## Stato
 
-Le due calibrazioni dell'utente sono pubblicate e il primo confronto metrico è stato eseguito: **406 gap validi su 5.517**. Sono state proiettate **2.186/40.331** osservazioni a Sherbrooke e **7.345/219.327** a René-Lévesque. La zona validata è una parte dei filmati; ampliarla richiede ulteriori riferimenti stradali affidabili. La cinematica è valutata separatamente sui 406 gap validi con riferimento a differenze finite della traiettoria completa; non è una misura GPS o inerziale indipendente.
+Le due calibrazioni dell'utente sono pubblicate e il confronto metrico disponibile
+copre **406 gap validi su 5.517** del run metrico originale. Sono state
+proiettate **2.186/40.331** osservazioni a Sherbrooke e **7.345/219.327** a
+René-Lévesque. Il benchmark pixel ufficiale è stato successivamente esteso a
+gap più lunghi; il run metrico esteso richiede una rigenerazione delle
+proiezioni con una calibrazione compatibile. La zona validata è una parte dei
+filmati; ampliarla richiede ulteriori riferimenti stradali affidabili. La
+cinematica è valutata separatamente sui 406 gap validi con riferimento a
+differenze finite della traiettoria completa; non è una misura GPS o inerziale
+indipendente.
 
-**[Risultati metrici e figure delle zone calibrate](reports/generated/ground/RESULTS.md)**
+**[Risultati metrici e figure delle zone calibrate](metric_benchmark_results.md)**
 
 Il lanciatore usa, quando presente, l'editor standalone:
 

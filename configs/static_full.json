@@ -1,7 +1,7 @@
 {
   "seed": 20260921,
   "masking_mode": "continuous",
-  "gap_sizes": [3, 6, 12, 24],
+  "gap_sizes": [3, 6, 12, 24, 48, 72, 120, 240],
   "support_per_side": 4,
   "minimum_track_frames": 24,
   "minimum_mean_confidence": 0.35,

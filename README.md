@@ -5,9 +5,9 @@ videos using numerical interpolation. The complete pipeline combines object
 detection, tracking, interpolation, road-plane calibration, and kinematic
 analysis.
 
-> **Main conclusion:** for the evaluated scenes and masking protocol, the
-> piecewise-linear **S1 interpolant** gives the best overall compromise
-> between position accuracy, kinematic accuracy, stability, and cost.
+> **Main conclusion:** S1 is the most robust method on short and medium gaps,
+> while natural S3 becomes competitive on very long gaps and gives lower RMS
+> error in the extended study.
 
 ## Project overview
 
@@ -15,10 +15,10 @@ analysis.
 |---|---|
 | Input | 2 complete Urban Tracker traffic videos |
 | Detection and tracking | YOLO11n + ByteTrack |
-| Main benchmark | 5,517 shared gaps, 3/6/12/24 hidden frames |
+| Main benchmark | 2,148 shared gaps, 3/6/12/24/48/72/120/240 hidden frames |
 | Visible support | 4 observations before and 4 after each gap |
 | Interpolation methods | 8 methods |
-| Pixel evaluations | 44,136, with no numerical failures |
+| Pixel evaluations | 17,184, with no numerical failures |
 | Metric evaluations | 406 gaps inside the calibrated road areas |
 | Kinematic quantities | speed, acceleration, and heading |
 
@@ -51,9 +51,10 @@ ground truth.
 ### Position reconstruction
 
 The reconstruction results are compared using ADE and RMS, computed over the
-hidden samples for every interpolation method and gap length. S1 is the best
-method according to both metrics over the tested video gaps. Natural S3
-and clamped S3 are close alternatives with smoother trajectories. Vandermonde,
+hidden samples for every interpolation method and gap length. S1 is the most
+accurate method on the short and medium gaps, while natural S3 becomes
+competitive as the gap grows. Natural S3 and clamped S3 are close alternatives
+with smoother trajectories. Vandermonde,
 Lagrange, and Newton are different implementations of the same polynomial on
 the same nodes; their accuracy is therefore identical up to floating-point
 rounding. S2 and Floater-Hormann are project extensions.
@@ -76,6 +77,25 @@ rounding. S2 and Floater-Hormann are project extensions.
 The metric benchmark is restricted to the 406 gaps for which every visible
 support point and hidden reference point lies inside the calibrated road area.
 The metric reference is the projection of YOLO/ByteTrack observations, not GPS.
+
+#### Extended long-gap study
+
+The official benchmark now includes 48, 72, 120, and 240 hidden frames in
+addition to the original shorter gaps. Four visible observations are still
+used on each side of every gap.
+
+| Gap | S1 ADE | Natural S3 ADE | S1 RMS | Natural S3 RMS |
+|---:|---:|---:|---:|---:|
+| 48 frames | **2.9898** | 3.4431 | 8.8722 | **7.0166** |
+| 72 frames | **4.8868** | 5.0748 | 14.4159 | **9.9057** |
+| 120 frames | 7.8804 | **7.5183** | 21.9145 | **15.4943** |
+| 240 frames | **11.0161** | 11.1780 | 27.1348 | **19.0938** |
+
+S1 remains better in ADE for 48, 72, and 240 frames, whereas natural S3
+achieves lower ADE at 120 frames and lower RMS at every extended gap. This
+shows that cubic smoothness can help on some long intervals, but it does not
+make S3 uniformly superior: with noisy detector trajectories, curvature
+estimation may also introduce overshoot.
 
 ### Node distribution and calibration
 

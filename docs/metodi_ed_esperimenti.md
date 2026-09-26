@@ -1,15 +1,18 @@
 # Metodi del corso e clip brevi dei passaggi
 
-La relazione attuale è sintetica e include gli estratti Python dei metodi: **[PDF](../relazione_progetto.pdf)**. Il confronto è stato esteso anche al [piano stradale calibrato](reports/generated/ground/RESULTS.md), su 406 gap ammissibili. I video completi e le clip sono linkati nella relazione; la cinematica è definita tramite derivate delle stesse interpolazioni di posizione e valutata nel [report cinematico](data/urbantracker/results/ground/KINEMATICS.md).
+La relazione attuale è sintetica e include gli estratti Python dei metodi:
+**[PDF](../relazione_progetto.pdf)**. Il confronto è stato esteso anche al
+[piano stradale calibrato](metric_benchmark_results.md), su 406 gap
+ammissibili. La cinematica è definita tramite derivate delle stesse
+interpolazioni di posizione e valutata nel [report cinematico tracciato](kinematics_results.md).
 
 ## Aprire le nuove clip
 
-Sono disponibili **12 clip separate**, sei per scena, della durata di circa **6,4–8 secondi**, in **1920×1080**, codificate sulla GPU con NVIDIA NVENC.
-
-- **[Indice di tutte le clip con anteprime](reports/generated/course/clips/INDEX.md)**
-- [Esempio René-Lévesque: passaggio dell'auto 1229](reports/generated/course/clips/urban_rene_car1229_f00611.mp4)
-- [Esempio Sherbrooke: passaggio dell'auto 3154](reports/generated/course/clips/urban_sherbrooke_car3154_f02922.mp4)
-- **[Report completo degli esperimenti](reports/generated/course/RESULTS.md)**
+Sono state generate **12 clip separate**, sei per scena, della durata di circa
+**6,4–8 secondi**, in **1920×1080**, codificate sulla GPU con NVIDIA NVENC.
+Le clip video non sono incluse nella repository GitHub per le loro dimensioni;
+è disponibile la [preview multi-metodo tracciata](assets/multimethod_interpolation_clip.jpg)
+e il [report completo degli esperimenti](pixel_benchmark_results.md).
 
 Ogni clip contiene nove riquadri sincronizzati: riferimento e otto interpolatori. La traiettoria originale YOLO/ByteTrack è una **linea rosso acceso `#FF0000`, spessa e con contorno scuro**. Ogni metodo ha un colore distinto; il riferimento rosso rimane visibile anche nel suo riquadro. Le curve non sono traslate artificialmente per distinguerle.
 
@@ -17,7 +20,8 @@ Il ritaglio è fisso per tutta la clip e uguale nei nove riquadri. Le coordinate
 
 ## Metodi implementati e relazione con le dispense
 
-Riferimento: [dispense di interpolazione](../Materiale/OneDrive_1_9-15-2026/Interpolazione.pdf).
+I riferimenti teorici sono riportati nella relazione PDF; le dispense originali
+non fanno parte della repository.
 
 | Metodo | Implementazione disponibile | Collegamento con il corso |
 |---|---|---|
@@ -35,18 +39,17 @@ Riferimento: [dispense di interpolazione](../Materiale/OneDrive_1_9-15-2026/Inte
 
 La S3 vincolata usa le derivate di interpolanti quadratici locali costruiti sui primi/ultimi tre nodi visibili. Le derivate sono correttamente convertite tra tempo fisico e normalizzato. Non si usano velocità ricavate dai valori nascosti.
 
-Vandermonde, Lagrange e Newton rappresentano **lo stesso polinomio** sugli stessi nodi. La differenza massima misurata su 56.928 punti è circa **1,04×10⁻¹⁰ pixel** tra Vandermonde e Lagrange e **2,97×10⁻¹¹ pixel** tra Vandermonde e Newton. I riquadri separati permettono di identificarli anche quando le curve coincidono.
+Vandermonde, Lagrange e Newton rappresentano **lo stesso polinomio** sugli stessi nodi. La differenza massima misurata su 70.485 punti è circa **1,71×10⁻⁶ pixel** tra Vandermonde e Lagrange e **1,68×10⁻⁶ pixel** tra Vandermonde e Newton. I riquadri separati permettono di identificarli anche quando le curve coincidono.
 
 Chebyshev è una scelta dei nodi, non un quarto algoritmo che debba produrre una curva diversa sugli stessi punti. Spline periodiche e trigonometrica sono analizzate su un moto chiuso sintetico, con periodo noto e ipotesi compatibili.
 
 ## Confronto esteso sui video
 
-Configurazione: [`configs/course_static.json`](configs/course_static.json).
+Configurazione: [`configs/course_static.json`](../configs/course_static.json).
 
-- **5.517 gap originali riutilizzati**, con manifest e checksum invariati.
-- Gap di **3, 6, 12 e 24 frame**: la richiesta di clip brevi non cambia le lunghezze dei gap.
+- **2.148 gap ufficiali**, con gap di **3, 6, 12, 24, 48, 72, 120 e 240 frame**.
 - Otto nodi visibili per caso, quattro prima e quattro dopo, uguali per tutti i metodi.
-- **44.136 valutazioni** e **455.424 posizioni stimate** nel confronto principale, nessun fallimento numerico.
+- **17.184 valutazioni** e **563.880 posizioni stimate** nel confronto principale, nessun fallimento numerico.
 - Metriche su tutte le tracce ammissibili dei filmati completi; le clip sono una selezione illustrativa.
 - Errori micro e macro, RMS euclideo, tempi di fit/valutazione, condizionamento della matrice monomiale e superamento del rettangolo dei nodi di supporto.
 
@@ -71,13 +74,14 @@ Questi risultati mostrano che aumentare la complessità dell'interpolante non ga
 
 Ripetizione sui **medesimi istanti nascosti** con 4, 6 e 8 nodi visibili. I nodi vengono selezionati simmetricamente tra quelli già disponibili; tutti i campioni globalmente nascosti restano esclusi. Per i polinomi i gradi massimi sono rispettivamente 3, 5 e 7.
 
-Risultati: [`support_study.csv`](reports/generated/course/experiments/support_study.csv). I manifest derivati contengono il campo `support_study` con il numero effettivo di nodi e l'hash della maschera originale; la configurazione originale è conservata come provenienza.
+Lo studio dei nodi è incluso nella relazione PDF; i CSV generati non sono
+distribuiti come asset GitHub.
 
 ### Chebyshev e Runge
 
 Funzione $f(t)=1/(1+25t^2)$ su $[-1,1]$, gradi 4, 8, 12, 16, 24 e 32, con $n+1$ nodi equispaziati oppure radici di Chebyshev. Il polinomio di Newton viene valutato matematicamente su tutto l'intervallo, comprese le piccole fasce esterne alle radici. Questo è un test sintetico di approssimazione, distinto dalla ricostruzione dei gap video, che rifiuta l'estrapolazione.
 
-[Grafico](reports/generated/course/experiments/chebyshev_runge.png) · [CSV](reports/generated/course/experiments/chebyshev_runge.csv)
+![Grafico Runge e Chebyshev](assets/chebyshev_runge.png)
 
 ### Periodicità
 
@@ -85,11 +89,11 @@ Traiettoria chiusa analitica, periodo 6 secondi, 49 campioni comprendenti l'estr
 
 Questo segnale appartiene alla base trigonometrica scelta, quindi è attesa una ricostruzione quasi esatta in aritmetica sufficientemente precisa. I risultati sono in unità sintetiche e non vengono mescolati con quelli stradali in pixel.
 
-[Grafico](reports/generated/course/experiments/periodic.png) · [CSV](reports/generated/course/experiments/periodic.csv)
+![Esperimento periodico](assets/periodic.png)
 
 ## Selezione dei passaggi
 
-Configurazione: [`configs/clips.json`](configs/clips.json). Si selezionano finestre di circa otto secondi, almeno sei, su tratti consecutivi con riferimenti disponibili. I criteri usano movimento robusto, spostamento rapportato alla dimensione dell'auto, dimensione visibile e continuità. Il filtraggio robusto serve soltanto alla selezione visiva e non modifica i dati del fit.
+Configurazione: [`configs/clips.json`](../configs/clips.json). Si selezionano finestre di circa otto secondi, almeno sei, su tratti consecutivi con riferimenti disponibili. I criteri usano movimento robusto, spostamento rapportato alla dimensione dell'auto, dimensione visibile e continuità. Il filtraggio robusto serve soltanto alla selezione visiva e non modifica i dati del fit.
 
 Sono state selezionate sei auto diverse per ciascuna scena, distribuendo le clip nel tempo tra 156 finestre candidate. Non si usano né graduatorie né errori degli interpolatori per scegliere i casi. Una clip può essere parte del passaggio completo; il suo intervallo preciso è indicato nel manifest. I fit possono utilizzare osservazioni visibili immediatamente esterne alla clip.
 
@@ -109,6 +113,10 @@ python3 -m src.passage_clips
 python3 -m src.course_report --verify-clips
 ```
 
-La suite attuale comprende **35 test**, inclusa la proiezione geografica. La verifica delle **12 clip**, per **2.783 frame**, controlla codec H.264, risoluzione, numero di frame e checksum. Risultati della verifica in [`clip_validation.json`](reports/generated/course/clip_validation.json).
+La suite attuale comprende **35 test**, inclusa la proiezione geografica. La
+verifica delle **12 clip**, per **2.783 frame**, controlla codec H.264,
+risoluzione, numero di frame e checksum. Le clip e il relativo JSON di
+validazione sono file generati esclusi dalla repository; la preview tracciata
+resta disponibile nella sezione precedente.
 
 Gli esperimenti periodici e sui nodi sono riproducibili da `src/course_experiments.py`; `src/passage_clips.py --select-only` genera soltanto il manifest dei passaggi. Colori, etichette e appartenenza al programma sono centralizzati in `src/methods.py`.

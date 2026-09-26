@@ -26,7 +26,7 @@ Le bounding box di YOLO servono a individuare il bottom center e a visualizzare 
 
 Due filmati completi: **Sherbrooke (4.000 frame)** e **René-Lévesque (8.501 frame)**. Tracking YOLO11n + ByteTrack, classe automobile. Le osservazioni vengono salvate prima di nascondere i punti: costituiscono un riferimento YOLO/ByteTrack, non annotazioni fisiche esatte.
 
-Le maschere condivise contengono gap di **3, 6, 12 e 24 frame**, con quattro nodi visibili per lato. Nessun campione nascosto in un gap può essere usato come supporto di un altro. Il confronto principale comprende **5.517 gap e otto metodi**. Le clip illustrative sono selezionate per movimento e distribuzione temporale, non per errore.
+Le maschere condivise contengono gap di **3, 6, 12, 24, 48, 72, 120 e 240 frame**, con quattro nodi visibili per lato. Nessun campione nascosto in un gap può essere usato come supporto di un altro. Il confronto principale comprende **2.148 gap e otto metodi**. Le clip illustrative sono selezionate per movimento e distribuzione temporale, non per errore.
 
 ## Metodi
 

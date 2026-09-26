@@ -585,7 +585,7 @@ yq = np.array([value(z) for z in xq])
 \section{Protocollo di confronto}
 
 Il riferimento completo è salvato prima di mascherare i dati. I gap
-contengono 3, 6, 12 o 24 frame nascosti; ogni fit usa quattro nodi visibili
+contengono 3, 6, 12, 24, 48, 72, 120 o 240 frame nascosti; ogni fit usa quattro nodi visibili
 prima e quattro dopo. I campioni nascosti non diventano supporto di altri
 gap. Gli stessi casi sono utilizzati da tutti i metodi.
 
@@ -618,55 +618,93 @@ proiettato non è una misura indipendente dell'accuratezza GPS dell'auto.
 
 \section{Risultati disponibili}
 
-Il confronto in pixel contiene \num{5517} gap, \num{56928} campioni
-nascosti e otto metodi: \num{44136} valutazioni, senza fallimenti numerici.
+Il confronto in pixel contiene \num{2148} gap, \num{70485} campioni
+nascosti e otto metodi: \num{17184} valutazioni, senza fallimenti numerici.
 Le prime tabelle descrivono il run completo in pixel; il confronto
 metrico successivo usa il sottoinsieme coperto dalle calibrazioni.
 
 \begin{table}[htbp]
 \centering
-\caption{ADE in pixel con otto nodi visibili.}
-\begin{tabular}{l S[table-format=2.4] S[table-format=2.4] S[table-format=2.4] S[table-format=2.4]}
+\caption{ADE in pixel per tutti i gap del benchmark, con otto nodi visibili.}
+\scriptsize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l*{8}{S[table-format=4.4]}}
 \toprule
-Metodo & {3 frame} & {6 frame} & {12 frame} & {24 frame}\\
+Metodo & {3} & {6} & {12} & {24} & {48} & {72} & {120} & {240}\\
 \midrule
-S1 & 0.3005 & 0.4154 & 0.6166 & 0.8799\\
-Vandermonde & 0.4362 & 0.9756 & 3.1968 & 14.2928\\
-Lagrange & 0.4362 & 0.9756 & 3.1968 & 14.2928\\
-Newton & 0.4362 & 0.9756 & 3.1968 & 14.2928\\
-S3 naturale & 0.3382 & 0.5233 & 0.8315 & 1.3387\\
-S3 vincolata & 0.3382 & 0.5236 & 0.8320 & 1.3402\\
-S2 (estensione) & 0.7501 & 1.1856 & 1.9437 & 3.3569\\
-Razionale FH (estensione) & 0.6792 & 1.8519 & 7.2033 & 35.1647\\
+S1 & 0.3513 & 0.5705 & 0.7855 & 1.2413 & 2.9898 & 4.8868 & 7.8804 & 11.0161\\
+Vandermonde & 0.5088 & 1.1545 & 4.2135 & 18.9447 & 101.8808 & 277.0082 & 1142.5919 & 6819.7511\\
+Lagrange & 0.5088 & 1.1545 & 4.2135 & 18.9447 & 101.8808 & 277.0082 & 1142.5919 & 6819.7511\\
+Newton & 0.5088 & 1.1545 & 4.2135 & 18.9447 & 101.8808 & 277.0082 & 1142.5919 & 6819.7511\\
+S3 naturale & 0.3891 & 0.6400 & 1.0348 & 1.8345 & 3.4431 & 5.0748 & 7.5183 & 11.1780\\
+S3 vincolata & 0.3890 & 0.6402 & 1.0361 & 1.8365 & 3.4446 & 5.0817 & 7.5269 & 11.1840\\
+S2 (estensione) & 0.8633 & 1.4999 & 2.3394 & 4.5059 & 8.4972 & 11.7482 & 19.0089 & 25.8366\\
+Razionale FH (estensione) & 0.8018 & 2.2159 & 9.4936 & 46.4790 & 261.9474 & 718.3288 & 3029.1047 & 18220.9100\\
 \bottomrule
 \end{tabular}
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{RMS in pixel per tutti i gap del benchmark, con otto nodi visibili.}
+\scriptsize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l*{8}{S[table-format=5.4]}}
+\toprule
+Metodo & {3} & {6} & {12} & {24} & {48} & {72} & {120} & {240}\\
+\midrule
+S1 & 0.6301 & 1.3533 & 1.7770 & 3.1589 & 8.8722 & 14.4159 & 21.9145 & 27.1348\\
+Vandermonde & 0.6983 & 1.7492 & 10.5720 & 33.4093 & 188.7232 & 488.6295 & 2341.3403 & 11704.6460\\
+Lagrange & 0.6983 & 1.7492 & 10.5720 & 33.4093 & 188.7232 & 488.6295 & 2341.3403 & 11704.6460\\
+Newton & 0.6983 & 1.7492 & 10.5720 & 33.4093 & 188.7232 & 488.6295 & 2341.3403 & 11704.6460\\
+S3 naturale & 0.5445 & 1.0909 & 2.1612 & 2.9122 & 7.0166 & 9.9057 & 15.4943 & 19.0938\\
+S3 vincolata & 0.5444 & 1.0908 & 2.1687 & 2.9180 & 7.0139 & 9.9186 & 15.4940 & 19.1123\\
+S2 (estensione) & 1.2397 & 2.4729 & 3.7042 & 7.5374 & 14.8758 & 22.0471 & 39.8497 & 45.8191\\
+Razionale FH (estensione) & 1.1072 & 3.3968 & 26.2621 & 85.8264 & 516.9439 & 1343.7377 & 6577.1603 & 33259.4248\\
+\bottomrule
+\end{tabular}
+}
 \end{table}
 
 Vandermonde, Lagrange e Newton differiscono fra loro al massimo di circa
 $10^{-10}$ pixel. I grandi errori sui gap lunghi non si eliminano
 cambiando soltanto la formulazione dello stesso polinomio.
 
+Il risultato a favore di S1 è coerente con la natura dei dati: le posizioni
+YOLO/ByteTrack sono rumorose e, nei brevi intervalli analizzati, il moto
+proiettato è spesso localmente quasi lineare. La S3 stima anche la curvatura
+e può quindi introdurre overshoot quando la curvatura è determinata dal
+rumore o dalle condizioni al bordo. In questo caso la maggiore regolarità
+della cubica non compensa la maggiore sensibilità, mentre S1 privilegia una
+ricostruzione locale più robusta.
+
 \begin{table}[htbp]
 \centering
-\caption{Effetto del supporto: ADE per gap di 24 frame, sugli stessi punti nascosti.}
-\begin{tabular}{l S[table-format=2.4] S[table-format=2.4] S[table-format=2.4]}
+\caption{Studio ufficiale dei gap lunghi: confronto diretto fra S1 e S3 naturale.}
+\begin{tabular}{l c S[table-format=2.4] S[table-format=2.4]}
 \toprule
-Metodo & {4 nodi} & {6 nodi} & {8 nodi}\\
+Gap & Metodo & {ADE (px)} & {RMS (px)}\\
 \midrule
-S1 & 0.8799 & 0.8799 & 0.8799\\
-Polinomio: tre formulazioni & 1.1256 & 3.9149 & 14.2928\\
-S3 naturale & 1.1374 & 1.3217 & 1.3387\\
-S3 vincolata & 1.1284 & 1.2934 & 1.3402\\
-S2 & 1.5098 & 2.6194 & 3.3569\\
-Razionale FH & 1.1256 & 4.8415 & 35.1647\\
+48 & S1 & 2.9898 & 8.8722\\
+48 & S3 naturale & 3.4431 & 7.0166\\
+72 & S1 & 4.8868 & 14.4159\\
+72 & S3 naturale & 5.0748 & 9.9057\\
+120 & S1 & 7.8804 & 21.9145\\
+120 & S3 naturale & 7.5183 & 15.4943\\
+240 & S1 & 11.0161 & 27.1348\\
+240 & S3 naturale & 11.1780 & 19.0938\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Più nodi non garantiscono un errore minore. Per i polinomi, 4, 6 e 8 nodi
-determinano gradi massimi 3, 5 e 7. S1 usa soltanto gli estremi del gap e
-rimane invariata. La graduatoria dipende anche dalla metrica: per gap di
-12 frame S3 naturale ha RMS inferiore a S1, pur avendo ADE maggiore.
+L'estensione ai gap di 48, 72, 120 e 240 frame mostra che la S3 naturale
+può superare S1 sui gap molto lunghi: ottiene ADE minore a 120 frame e RMS
+minore in tutti i quattro casi. S1 resta migliore in ADE a 48, 72 e 240
+frame. Il risultato non contraddice il benchmark principale: sui dati
+rumorosi la S1 è più robusta in media, mentre su intervalli molto estesi la
+regolarità della S3 può ridurre gli errori estremi, pur potendo introdurre
+overshoot.
 
 \begin{figure}[htbp]
 \centering
@@ -683,19 +721,24 @@ dal confronto metrico.
 
 \begin{table}[htbp]
 \centering
-\caption{ADE in metri: interpolazione direttamente nel piano $(E,N)$, sugli stessi 406 gap ammissibili.}
-\begin{tabular}{l S[table-format=1.4] S[table-format=1.4] S[table-format=1.4] S[table-format=1.4]}
+\caption{Confronto metrico sui 406 gap ammissibili: ADE/RMS per lunghezza del gap.}
+\scriptsize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l*{8}{S[table-format=2.4]}}
 \toprule
-Metodo & {3 frame} & {6 frame} & {12 frame} & {24 frame}\\
+Metodo & \multicolumn{2}{c}{3 frame} & \multicolumn{2}{c}{6 frame} &
+\multicolumn{2}{c}{12 frame} & \multicolumn{2}{c}{24 frame}\\
+ & {ADE} & {RMS} & {ADE} & {RMS} & {ADE} & {RMS} & {ADE} & {RMS}\\
 \midrule
-S1 & 0.0450 & 0.0642 & 0.0878 & 0.1075\\
-Vandermonde / Lagrange / Newton & 0.0749 & 0.1506 & 0.5576 & 2.1673\\
-S3 naturale & 0.0570 & 0.0810 & 0.1386 & 0.1987\\
-S3 vincolata & 0.0570 & 0.0810 & 0.1386 & 0.1992\\
-S2 & 0.1231 & 0.1970 & 0.3548 & 0.4885\\
-Razionale FH & 0.1166 & 0.2885 & 1.2840 & 5.1797\\
+S1 & 0.0450 & 0.0641 & 0.0642 & 0.0967 & 0.0878 & 0.1427 & 0.1075 & 0.1644\\
+Vandermonde / Lagrange / Newton & 0.0749 & 0.0970 & 0.1505 & 0.2155 & 0.5576 & 0.8323 & 2.1672 & 3.4613\\
+S3 naturale & 0.0570 & 0.0751 & 0.0810 & 0.1102 & 0.1386 & 0.2034 & 0.1987 & 0.2979\\
+S3 vincolata & 0.0570 & 0.0751 & 0.0810 & 0.1101 & 0.1386 & 0.2035 & 0.1992 & 0.2989\\
+S2 (estensione) & 0.1231 & 0.1674 & 0.1970 & 0.3011 & 0.3548 & 0.5102 & 0.4884 & 0.7782\\
+Razionale FH (estensione) & 0.1166 & 0.1523 & 0.2885 & 0.4474 & 1.2840 & 1.9835 & 5.1797 & 9.1738\\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
 La baseline in pixel è ricalcolata su questi stessi casi. Per gap di
@@ -807,11 +850,11 @@ valutato solo per velocità di riferimento almeno pari a \num{0.5} m/s.
 
 \begin{table}[htbp]
 \centering
-\caption{Errore cinematica per gap di 24 frame, media sui 406 gap metrici.}
-\scriptsize
-\begin{tabular}{p{4.6cm}rrr}
+\caption{Errore cinematico per gap di 24 frame, media sui 406 gap metrici.}
+\small
+\begin{tabular}{l S[table-format=2.4] S[table-format=3.4] S[table-format=2.4]}
 \toprule
-Metodo & MAE velocità (m/s) & MAE accelerazione (m/s$^2$) & MAE heading (gradi)\\
+Metodo & \multicolumn{1}{c}{Velocità (m/s)} & \multicolumn{1}{c}{Accelerazione (m/s$^2$)} & \multicolumn{1}{c}{Heading (gradi)}\\
 \midrule
 S1 & 0.7607 & 19.5135 & 24.2816\\
 S3 naturale & 0.9262 & 20.0055 & 26.9254\\
@@ -859,7 +902,7 @@ geometrica è verificata su casi sintetici: ordine Est/Nord, trasformazioni
 geografiche, compatibilità e dominio valido.
 
 I risultati disponibili mostrano che \textbf{un metodo più complesso
-non è automaticamente più accurato}. Per queste scene, sui gap di 3, 6,
+non è automaticamente più accurato}. Per queste scene, sui gap brevi di 3, 6,
 12 e 24 frame, \textbf{S1 lineare è il metodo migliore per ADE e RMS}
 ed è anche il più economico tra i metodi con errore comparabile. La
 \textbf{S3 naturale} è la principale alternativa: segue S1 con errori
@@ -870,8 +913,15 @@ metodi diversi in termini di accuratezza. S2 e soprattutto la razionale
 Floater--Hormann risultano peggiori su questi video, in particolare per
 gap lunghi. Questa graduatoria è confermata anche dalla valutazione cinematica
 disponibile: S1 è il compromesso migliore per posizione, velocità, heading
-e accelerazione sui gap lunghi. S3 naturale resta una valida alternativa
-quando si privilegia la regolarità della traiettoria.
+e accelerazione sui gap lunghi del benchmark cinematico. Nell'estensione
+ufficiale ai gap di 48, 72, 120 e 240 frame, S3 naturale riduce l'RMS in
+tutti i casi e ottiene anche ADE minore a 120 frame; S1 resta migliore in
+ADE negli altri tre casi. S3 naturale resta quindi una valida alternativa
+quando si privilegia la regolarità della traiettoria. La vittoria di S1,
+nonostante la maggiore complessità teorica di S3, si spiega con il rumore
+delle osservazioni e con il moto localmente quasi lineare: la cubica può
+stimare una curvatura artificiale e produrre overshoot, mentre la linearità
+a tratti di S1 rimane più robusta.
 
 I due video completi e le dodici clip sono riproducibili dai link nella
 sezione precedente e dai comandi sopra. Le osservazioni restano

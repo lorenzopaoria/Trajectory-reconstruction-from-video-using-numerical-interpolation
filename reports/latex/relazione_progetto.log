@@ -630,21 +630,27 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
  [4] [5] [6] [7] [8] [9]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 645.
+
+Overfull \hbox (4.25pt too wide) detected at line 645
+$\OT1/lmr/m/n/8 18 220$
+ []
+
+[10]
 File: figures//course_comparison.png Graphic file (type bmp)
 <figures//course_comparison.png>
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 686.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 686.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 686.
 File: figures//calibration_coverage.png Graphic file (type bmp)
 <figures//calibration_coverage.png>
- [10] [11]
 File: figures//chebyshev_runge.png Graphic file (type bmp)
 <figures//chebyshev_runge.png>
+ [11]
 File: figures//clip_rene.jpg Graphic file (type bmp)
 <figures//clip_rene.jpg>
- [12]
-[13] [14] [15] (relazione_progetto.aux) )
-Output written on relazione_progetto.xdv (15 pages, 155820 bytes).
+ [12] [13]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 855.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 855.
+ [14] [15] (relazione_progetto.aux) )
+Output written on relazione_progetto.xdv (15 pages, 162468 bytes).

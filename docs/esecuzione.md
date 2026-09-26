@@ -39,7 +39,8 @@ python3 -m src.ground_report
 
 Le istruzioni per scegliere i punti e la descrizione delle unità sono in [calibrazione.md](calibrazione.md). Gli script metrici richiedono calibrazioni reali e compatibili: non sostituiscono coordinate mancanti con valori fittizi.
 
-Il confronto sulle due calibrazioni già pubblicate è disponibile in [reports/generated/ground/RESULTS.md](reports/generated/ground/RESULTS.md).
+Il confronto sulle due calibrazioni già pubblicate è disponibile nel
+[report metrico tracciato](metric_benchmark_results.md).
 
 ## Cartelle
 

@@ -1,10 +1,14 @@
 # Confronto dei metodi del corso e clip dei passaggi
 
-- 8 metodi nel benchmark stradale, 5517 gap, 44136 valutazioni.
-- Fallimenti numerici: 0; maschere salvate riutilizzate: True.
+- 8 metodi nel benchmark stradale, 2148 gap, 17184 valutazioni.
+- Fallimenti numerici: 0; maschere salvate riutilizzate: False.
 - 12 clip di passaggi, durata 6.40–8.01 s, codificate con NVENC.
 - Ogni clip: riferimento YOLO/ByteTrack rosso acceso, zoom fisso e un riquadro per interpolatore.
 - Le clip sono illustrative e selezionate per movimento e distribuzione temporale, indipendentemente dagli errori. Le metriche coprono tutti i casi ammissibili dei video completi.
+
+Le clip video complete non sono incluse nella repository GitHub perché sono
+file generati di grandi dimensioni. È disponibile una [anteprima multi-metodo
+tracciata](assets/multimethod_interpolation_clip.jpg).
 
 ## Metodi
 
@@ -16,38 +20,70 @@ S2 è un'estensione dalla definizione generale di spline. La famiglia razionale 
 
 | Metodo | Gap | ADE (px) | RMS (px) | Fit mediano (ms) | Fallimenti |
 |---|---:|---:|---:|---:|---:|
-| Lagrange | 3 | 0.4362 | 0.6955 | 0.1174 | 0 |
-| Lagrange | 6 | 0.9756 | 1.4814 | 0.1176 | 0 |
-| Lagrange | 12 | 3.1968 | 5.2456 | 0.1179 | 0 |
-| Lagrange | 24 | 14.2928 | 25.3907 | 0.1177 | 0 |
-| Newton | 3 | 0.4362 | 0.6955 | 0.0545 | 0 |
-| Newton | 6 | 0.9756 | 1.4814 | 0.0549 | 0 |
-| Newton | 12 | 3.1968 | 5.2456 | 0.0548 | 0 |
-| Newton | 24 | 14.2928 | 25.3907 | 0.0553 | 0 |
-| Razionale FH (est.) | 3 | 0.6792 | 1.0875 | 0.1980 | 0 |
-| Razionale FH (est.) | 6 | 1.8519 | 2.8934 | 0.1982 | 0 |
-| Razionale FH (est.) | 12 | 7.2033 | 12.5734 | 0.1987 | 0 |
-| Razionale FH (est.) | 24 | 35.1647 | 65.8957 | 0.1987 | 0 |
-| S1 lineare | 3 | 0.3005 | 0.4821 | 0.1005 | 0 |
-| S1 lineare | 6 | 0.4154 | 0.7901 | 0.1000 | 0 |
-| S1 lineare | 12 | 0.6166 | 1.3814 | 0.0996 | 0 |
-| S1 lineare | 24 | 0.8799 | 2.2591 | 0.0992 | 0 |
-| S2 (estensione) | 3 | 0.7501 | 1.1024 | 0.0793 | 0 |
-| S2 (estensione) | 6 | 1.1856 | 1.8181 | 0.0802 | 0 |
-| S2 (estensione) | 12 | 1.9437 | 3.0040 | 0.0801 | 0 |
-| S2 (estensione) | 24 | 3.3569 | 5.9658 | 0.0806 | 0 |
-| S3 vincolata | 3 | 0.3382 | 0.5195 | 0.6253 | 0 |
-| S3 vincolata | 6 | 0.5236 | 0.8300 | 0.6272 | 0 |
-| S3 vincolata | 12 | 0.8320 | 1.3137 | 0.6283 | 0 |
-| S3 vincolata | 24 | 1.3402 | 2.3050 | 0.6313 | 0 |
-| S3 naturale | 3 | 0.3382 | 0.5189 | 0.3008 | 0 |
-| S3 naturale | 6 | 0.5233 | 0.8296 | 0.3016 | 0 |
-| S3 naturale | 12 | 0.8315 | 1.3137 | 0.3010 | 0 |
-| S3 naturale | 24 | 1.3387 | 2.3018 | 0.3022 | 0 |
-| Vandermonde | 3 | 0.4362 | 0.6955 | 0.0733 | 0 |
-| Vandermonde | 6 | 0.9756 | 1.4814 | 0.0736 | 0 |
-| Vandermonde | 12 | 3.1968 | 5.2456 | 0.0735 | 0 |
-| Vandermonde | 24 | 14.2928 | 25.3907 | 0.0738 | 0 |
+| Lagrange | 3 | 0.5088 | 0.6983 | 0.0992 | 0 |
+| Lagrange | 6 | 1.1545 | 1.7492 | 0.0999 | 0 |
+| Lagrange | 12 | 4.2135 | 10.5720 | 0.0983 | 0 |
+| Lagrange | 24 | 18.9447 | 33.4093 | 0.1003 | 0 |
+| Lagrange | 48 | 101.8808 | 188.7232 | 0.1014 | 0 |
+| Lagrange | 72 | 277.0082 | 488.6295 | 0.1051 | 0 |
+| Lagrange | 120 | 1142.5919 | 2341.3403 | 0.1018 | 0 |
+| Lagrange | 240 | 6819.7511 | 11704.6460 | 0.1038 | 0 |
+| Newton | 3 | 0.5088 | 0.6983 | 0.0460 | 0 |
+| Newton | 6 | 1.1545 | 1.7492 | 0.0461 | 0 |
+| Newton | 12 | 4.2135 | 10.5720 | 0.0460 | 0 |
+| Newton | 24 | 18.9447 | 33.4093 | 0.0465 | 0 |
+| Newton | 48 | 101.8808 | 188.7232 | 0.0467 | 0 |
+| Newton | 72 | 277.0082 | 488.6295 | 0.0494 | 0 |
+| Newton | 120 | 1142.5919 | 2341.3403 | 0.0502 | 0 |
+| Newton | 240 | 6819.7511 | 11704.6460 | 0.0532 | 0 |
+| Razionale FH (est.) | 3 | 0.8018 | 1.1072 | 0.1680 | 0 |
+| Razionale FH (est.) | 6 | 2.2159 | 3.3968 | 0.1664 | 0 |
+| Razionale FH (est.) | 12 | 9.4936 | 26.2621 | 0.1717 | 0 |
+| Razionale FH (est.) | 24 | 46.4790 | 85.8264 | 0.1719 | 0 |
+| Razionale FH (est.) | 48 | 261.9474 | 516.9439 | 0.1752 | 0 |
+| Razionale FH (est.) | 72 | 718.3288 | 1343.7377 | 0.1779 | 0 |
+| Razionale FH (est.) | 120 | 3029.1047 | 6577.1603 | 0.1714 | 0 |
+| Razionale FH (est.) | 240 | 18220.9100 | 33259.4248 | 0.1719 | 0 |
+| S1 lineare | 3 | 0.3513 | 0.6301 | 0.0899 | 0 |
+| S1 lineare | 6 | 0.5705 | 1.3533 | 0.0915 | 0 |
+| S1 lineare | 12 | 0.7855 | 1.7770 | 0.0871 | 0 |
+| S1 lineare | 24 | 1.2413 | 3.1589 | 0.0908 | 0 |
+| S1 lineare | 48 | 2.9898 | 8.8722 | 0.0881 | 0 |
+| S1 lineare | 72 | 4.8868 | 14.4159 | 0.0938 | 0 |
+| S1 lineare | 120 | 7.8804 | 21.9145 | 0.0893 | 0 |
+| S1 lineare | 240 | 11.0161 | 27.1348 | 0.0856 | 0 |
+| S2 (estensione) | 3 | 0.8633 | 1.2397 | 0.0672 | 0 |
+| S2 (estensione) | 6 | 1.4999 | 2.4729 | 0.0674 | 0 |
+| S2 (estensione) | 12 | 2.3394 | 3.7042 | 0.0678 | 0 |
+| S2 (estensione) | 24 | 4.5059 | 7.5374 | 0.0678 | 0 |
+| S2 (estensione) | 48 | 8.4972 | 14.8758 | 0.0715 | 0 |
+| S2 (estensione) | 72 | 11.7482 | 22.0471 | 0.0724 | 0 |
+| S2 (estensione) | 120 | 19.0089 | 39.8497 | 0.0734 | 0 |
+| S2 (estensione) | 240 | 25.8366 | 45.8191 | 0.0727 | 0 |
+| S3 vincolata | 3 | 0.3890 | 0.5444 | 0.5465 | 0 |
+| S3 vincolata | 6 | 0.6402 | 1.0908 | 0.5486 | 0 |
+| S3 vincolata | 12 | 1.0361 | 2.1687 | 0.5552 | 0 |
+| S3 vincolata | 24 | 1.8365 | 2.9180 | 0.5584 | 0 |
+| S3 vincolata | 48 | 3.4446 | 7.0139 | 0.5656 | 0 |
+| S3 vincolata | 72 | 5.0817 | 9.9186 | 0.5740 | 0 |
+| S3 vincolata | 120 | 7.5269 | 15.4940 | 0.5687 | 0 |
+| S3 vincolata | 240 | 11.1840 | 19.1123 | 0.6233 | 0 |
+| S3 naturale | 3 | 0.3891 | 0.5445 | 0.2676 | 0 |
+| S3 naturale | 6 | 0.6400 | 1.0909 | 0.2677 | 0 |
+| S3 naturale | 12 | 1.0348 | 2.1612 | 0.2667 | 0 |
+| S3 naturale | 24 | 1.8345 | 2.9122 | 0.2696 | 0 |
+| S3 naturale | 48 | 3.4431 | 7.0166 | 0.2788 | 0 |
+| S3 naturale | 72 | 5.0748 | 9.9057 | 0.2783 | 0 |
+| S3 naturale | 120 | 7.5183 | 15.4943 | 0.2774 | 0 |
+| S3 naturale | 240 | 11.1780 | 19.0938 | 0.3042 | 0 |
+| Vandermonde | 3 | 0.5088 | 0.6983 | 0.0669 | 0 |
+| Vandermonde | 6 | 1.1545 | 1.7492 | 0.0662 | 0 |
+| Vandermonde | 12 | 4.2135 | 10.5720 | 0.0635 | 0 |
+| Vandermonde | 24 | 18.9447 | 33.4093 | 0.0665 | 0 |
+| Vandermonde | 48 | 101.8808 | 188.7232 | 0.0675 | 0 |
+| Vandermonde | 72 | 277.0082 | 488.6295 | 0.0686 | 0 |
+| Vandermonde | 120 | 1142.5919 | 2341.3403 | 0.0695 | 0 |
+| Vandermonde | 240 | 6819.7511 | 11704.6460 | 0.0705 | 0 |
 
 I tempi sono misure descrittive di singoli fit, aggregate su molte prove; includono le due coordinate. Il calcolo del condizionamento è escluso dall'intervallo cronometrato.
 Il condizionamento esportato si riferisce alla matrice monomiale sul tempo normalizzato, non a ogni famiglia di interpolatori. L'eccesso rispetto al rettangolo dei nodi di supporto è un indicatore geometrico, non un errore fisico.
@@ -56,8 +92,8 @@ Il condizionamento esportato si riferisce alla matrice monomiale sul tempo norma
 
 ## Equivalenza delle formulazioni polinomiali
 
-- Vandermonde / lagrange: 56928 punti confrontati, differenza euclidea massima **1.044e-10 pixel**.
-- Vandermonde / newton: 56928 punti confrontati, differenza euclidea massima **2.966e-11 pixel**.
+- Vandermonde / lagrange: 70485 punti confrontati, differenza euclidea massima **1.709e-06 pixel**.
+- Vandermonde / newton: 70485 punti confrontati, differenza euclidea massima **1.682e-06 pixel**.
 
 Con gli stessi nodi i tre metodi rappresentano lo stesso polinomio. Le oscillazioni rispetto al riferimento non si risolvono semplicemente passando da una formulazione all'altra.
 

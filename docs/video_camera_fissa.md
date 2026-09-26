@@ -15,12 +15,10 @@ La copertura temporale indica i frame con almeno un'automobile mascherata. Ogni 
 
 ### Aprire i risultati
 
-- **[Video completo Sherbrooke](reports/generated/static_full/full_reconstruction_urban_sherbrooke.mp4)**
-- **[Video completo René-Lévesque](reports/generated/static_full/full_reconstruction_urban_rene.mp4)**
-- [Report numerico](reports/generated/static_full/RESULTS.md)
-- [Copertura lungo tutta la durata](reports/generated/static_full/coverage_timeline.png)
-- [Confronto degli errori](reports/generated/static_full/error_vs_gap.png)
-- [Manifest dei video prodotti](reports/generated/static_full/full_video_manifest.json)
+I video completi e i relativi file generati non sono inclusi nella repository
+GitHub per le loro dimensioni. Le figure e i risultati leggeri sono disponibili
+nel [report del benchmark in pixel](pixel_benchmark_results.md) e nel
+[README principale](../README.md).
 
 Nei video:
 
@@ -53,12 +51,12 @@ I metadati conservano i link geografici pubblicati per le scene di Montréal. Qu
 
 ## Mascheramento continuo
 
-Configurazione: [`configs/static_full.json`](configs/static_full.json).
+Configurazione: [`configs/static_full.json`](../configs/static_full.json).
 
 1. Tracking sul video completo, solo classe COCO `2` (`car`).
 2. Selezione delle tracce: almeno 24 osservazioni, confidence media almeno 0,35, geometria valida, classe costante e spostamento nell'immagine di almeno 8 pixel. Le motivazioni degli scarti sono salvate.
 3. Separazione di ogni traccia nei suoi tratti osservati consecutivamente.
-4. Distribuzione di gap di **3, 6, 12 e 24 frame**, circa 0,1–0,8 secondi, dall'inizio alla fine di ciascun tratto utilizzabile. Non c'è più un limite di cinque gap per traccia.
+4. Distribuzione di gap di **3, 6, 12, 24, 48, 72, 120 e 240 frame**, dall'inizio alla fine di ciascun tratto utilizzabile.
 5. Quattro osservazioni visibili tra due gap successivi; ogni interpolatore usa quattro nodi prima e quattro dopo il gap. Le osservazioni di appoggio possono essere condivise, ma **nessun punto nascosto è mai usato come supporto di un altro gap**.
 6. Le stesse maschere sono utilizzate per S1, S2 e S3 naturale. Tutti i gap vengono visualizzati durante il filmato completo, non viene scelto un singolo caso dimostrativo.
 
@@ -68,7 +66,7 @@ Configurazione: [`configs/static_full.json`](configs/static_full.json).
 
 - **259.658 osservazioni** di automobili complessive: 40.331 a Sherbrooke e 219.327 a René-Lévesque.
 - **218 tracce** con ricostruzioni.
-- **5.517 gap** e **56.928 osservazioni nascoste**.
+- **2.148 gap** e **70.485 osservazioni nascoste** nel benchmark ufficiale esteso.
 - **16.551 valutazioni** e **170.784 stime di posizione** contando i tre metodi.
 - Nessun fallimento numerico; 15 test automatici superati, inclusa l'esclusione globale di tutti i punti nascosti dagli input del fit.
 - Decodifica finale verificata con `ffprobe`: 4.000 e 8.501 frame, H.264.
